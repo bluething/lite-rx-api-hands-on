@@ -6,15 +6,15 @@ import io.pivotal.literx.domain.User;
 import io.pivotal.literx.repository.BlockingUserRepository;
 import io.pivotal.literx.repository.ReactiveRepository;
 import io.pivotal.literx.repository.ReactiveUserRepository;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Learn how to call blocking code from Reactive one with adapted concurrency strategy for
@@ -39,7 +39,7 @@ public class Part11BlockingToReactiveTest {
 	public void slowPublisherFastSubscriber() {
 		BlockingUserRepository repository = new BlockingUserRepository();
 		Flux<User> flux = workshop.blockingRepositoryToFlux(repository);
-		assertEquals("The call to findAll must be deferred until the flux is subscribed", 0, repository.getCallCount());
+		assertEquals(0, repository.getCallCount(), "The call to findAll must be deferred until the flux is subscribed");
 		StepVerifier.create(flux)
 				.expectNext(User.SKYLER, User.JESSE, User.WALTER, User.SAUL)
 				.verifyComplete();
