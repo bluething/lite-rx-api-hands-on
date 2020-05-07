@@ -32,23 +32,41 @@ public class Part07Errors {
 //========================================================================================
 
 	// TODO Return a Mono<User> containing User.SAUL when an error occurs in the input Mono, else do not change the input Mono.
+	// onErrorResume(Class<E> type, Function<? super E,? extends Mono<? extends T>> fallback)
+	// Subscribe to a fallback publisher when an error matching the given type occurs, using a function to choose the fallback depending on the error.
+	// just(T data)
+	// Create a new Mono that emits the specified item, which is captured at instantiation time.
 	Mono<User> betterCallSaulForBogusMono(Mono<User> mono) {
-		return null;
+		return mono.onErrorResume(e -> Mono.just(User.SAUL));
 	}
 
 //========================================================================================
 
 	// TODO Return a Flux<User> containing User.SAUL and User.JESSE when an error occurs in the input Flux, else do not change the input Flux.
+	// onErrorResume(Function<? super Throwable,? extends Publisher<? extends T>> fallback)
+	// Subscribe to a returned fallback publisher when any error occurs, using a function to choose the fallback depending on the error. 
+	// just(T... data)
+	// Create a Flux that emits the provided elements and then completes. 
 	Flux<User> betterCallSaulAndJesseForBogusFlux(Flux<User> flux) {
-		return null;
+		return flux.onErrorResume(e -> Flux.just(User.SAUL, User.JESSE));
 	}
 
 //========================================================================================
 
 	// TODO Implement a method that capitalizes each user of the incoming flux using the
 	// #capitalizeUser method and emits an error containing a GetOutOfHereException error
+	// Exceptions.propagate(Throwable t)
+	// Prepare an unchecked RuntimeException that should be propagated downstream through Subscriber.onError(Throwable).
+	// This method invokes throwIfFatal(Throwable).
 	Flux<User> capitalizeMany(Flux<User> flux) {
-		return null;
+		return flux.map(user -> {
+			try {
+				return capitalizeUser(user);
+			}
+			catch (GetOutOfHereException e) {
+				throw Exceptions.propagate(e);
+			}
+		});
 	}
 
 	User capitalizeUser(User user) throws GetOutOfHereException {
