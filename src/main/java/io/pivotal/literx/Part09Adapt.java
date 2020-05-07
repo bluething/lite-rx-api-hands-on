@@ -19,6 +19,7 @@ package io.pivotal.literx;
 import java.util.concurrent.CompletableFuture;
 
 import io.pivotal.literx.domain.User;
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -42,49 +43,65 @@ public class Part09Adapt {
 //========================================================================================
 
 	// TODO Adapt Flux to RxJava Flowable
+	// Flowable.fromPublisher(Publisher<? extends User> source)
+	// Converts an arbitrary Reactive-Streams Publisher into a Flowable if not already a Flowable.
 	Flowable<User> fromFluxToFlowable(Flux<User> flux) {
-		return null;
+		return Flowable.fromPublisher(flux);
 	}
 
 	// TODO Adapt RxJava Flowable to Flux
+	// Flux.from(Publisher<? extends User> source)
+	// Decorate the specified Publisher with the Flux API.
 	Flux<User> fromFlowableToFlux(Flowable<User> flowable) {
-		return null;
+		return Flux.from(flowable);
 	}
 
 //========================================================================================
 
 	// TODO Adapt Flux to RxJava Observable
+	// Observable.fromPublisher(Publisher<? extends User> publisher)
+	// Converts an arbitrary Reactive-Streams Publisher into an Observable.
 	Observable<User> fromFluxToObservable(Flux<User> flux) {
-		return null;
+		return Observable.fromPublisher(flux);
 	}
 
 	// TODO Adapt RxJava Observable to Flux
+	// Observable.toFlowable(BackpressureStrategy strategy)
+	// Converts the current Observable into a Flowable by applying the specified backpressure strategy.
 	Flux<User> fromObservableToFlux(Observable<User> observable) {
-		return null;
+		return Flux.from(observable.toFlowable(BackpressureStrategy.BUFFER));
 	}
 
 //========================================================================================
 
 	// TODO Adapt Mono to RxJava Single
+	// Single.fromPublisher(Publisher<? extends User> publisher)
+	// Wraps a specific Publisher into a Single and signals its single element or error.
 	Single<User> fromMonoToSingle(Mono<User> mono) {
-		return null;
+		return Single.fromPublisher(mono);
 	}
 
 	// TODO Adapt RxJava Single to Mono
+	// Mono.from(Publisher<? extends User> source)
+	// Expose the specified Publisher with the Mono API, and ensure it will emit 0 or 1 item. The source emitter will be cancelled on the first `onNext`.
 	Mono<User> fromSingleToMono(Single<User> single) {
-		return null;
+		return Mono.from(single.toFlowable());
 	}
 
 //========================================================================================
 
 	// TODO Adapt Mono to Java 8+ CompletableFuture
+	// Mono.toFuture()
+	// Transform this Mono into a CompletableFuture completing on onNext or onComplete and failing on onError.
 	CompletableFuture<User> fromMonoToCompletableFuture(Mono<User> mono) {
-		return null;
+		return mono.toFuture();
 	}
 
 	// TODO Adapt Java 8+ CompletableFuture to Mono
+	// Mono.fromFuture(CompletableFuture<? extends User> future)
+	// Create a Mono, producing its value using the provided CompletableFuture.
 	Mono<User> fromCompletableFutureToMono(CompletableFuture<User> future) {
-		return null;
+		return Mono.fromFuture(future);
 	}
 
 }
